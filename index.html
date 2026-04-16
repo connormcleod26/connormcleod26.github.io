@@ -116,7 +116,8 @@
   .btn:hover { background: var(--ink); color: var(--bg); }
   .btn-accent { background: var(--accent); color: #fff; border-color: var(--accent); }
   .btn-accent:hover { background: #a03e12; border-color: #a03e12; color: #fff; }
-<
+
+  /* FIX: removed stray '<' character that was here */
   .hero-scroll {
     position: absolute; bottom: 2.5rem; left: var(--gutter);
     font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
@@ -437,7 +438,7 @@
   <p class="contact-intro reveal">
     Whether you'd like to discuss a collaboration, ask about my work, or just say hello — I'd be glad to hear from you.
   </p>
-  <form class="contact-form" action="https://formspree.io/f/abcxyz" method="POST">
+  <form class="contact-form reveal" action="https://formspree.io/f/abcxyz" method="POST">
     <div class="form-row">
       <div class="field">
         <label for="name">Name</label>
@@ -459,7 +460,6 @@
     <div class="form-submit">
       <button type="submit" class="btn btn-accent">Send Message</button>
     </div>
-    <p id="form-feedback" style="font-size:0.8rem;color:var(--accent);display:none;margin-top:0.5rem;">Message sent! I'll be in touch soon.</p>
   </form>
 </section>
 
@@ -477,9 +477,8 @@
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
+    entries.forEach((e) => {
       if (e.isIntersecting) {
-        // stagger siblings
         const siblings = [...e.target.parentElement.querySelectorAll('.reveal')];
         const idx = siblings.indexOf(e.target);
         setTimeout(() => e.target.classList.add('visible'), idx * 80);
@@ -488,14 +487,6 @@
     });
   }, { threshold: 0.12 });
   reveals.forEach(el => observer.observe(el));
-
-  // Form
-  function handleSubmit(e) {
-    e.preventDefault();
-    // Wire up to your backend / Formspree / EmailJS as needed
-    document.getElementById('form-feedback').style.display = 'block';
-    e.target.reset();
-  }
 
   // Active nav highlight
   const sections = document.querySelectorAll('section[id]');
