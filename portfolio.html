@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connor — Engineering Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f3ef;
+    --ink: #1a1916;
+    --ink-mid: #5a5750;
+    --ink-faint: #b5b2aa;
+    --accent: #c8501a;
+    --accent-pale: #f0e8e2;
+    --rule: #dedad4;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --mono: 'DM Mono', 'Courier New', monospace;
+    --gutter: clamp(1.5rem, 6vw, 5rem);
+    --max: 900px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem var(--gutter);
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--ink-mid);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── SECTIONS ── */
+  section { padding: 7rem var(--gutter) 5rem; max-width: calc(var(--max) + 2 * var(--gutter)); margin: 0 auto; }
+  .pt-nav { padding-top: 8rem; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding-top: 6rem;
+    position: relative;
+  }
+  .hero-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.7s 0.1s forwards;
+  }
+  .hero-name {
+    font-family: var(--serif);
+    font-size: clamp(3.5rem, 9vw, 7rem);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.7s 0.25s forwards;
+  }
+  .hero-name em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    max-width: 480px;
+    color: var(--ink-mid);
+    line-height: 1.8;
+    margin-bottom: 3rem;
+    opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.7s 0.55s forwards;
+  }
+  .btn {
+    padding: 0.75rem 1.75rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    display: inline-block;
+  }
+  .btn:hover { background: var(--ink); color: var(--bg); }
+  .btn-accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-accent:hover { background: #a03e12; border-color: #a03e12; color: #fff; }
+
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: var(--gutter);
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--ink-faint);
+    display: flex; align-items: center; gap: 0.75rem;
+    opacity: 0; animation: fadeUp 0.7s 0.9s forwards;
+  }
+  .hero-scroll::before {
+    content: '';
+    display: block; width: 1px; height: 40px;
+    background: var(--ink-faint);
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex; align-items: baseline; gap: 1.25rem;
+    margin-bottom: 3.5rem;
+    border-bottom: 1px solid var(--rule); padding-bottom: 1rem;
+  }
+  .section-num {
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); flex-shrink: 0;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  /* ── ABOUT ── */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+  .about-bio p { color: var(--ink-mid); line-height: 1.9; margin-bottom: 1rem; }
+  .about-meta { border-left: 1px solid var(--rule); padding-left: 2.5rem; }
+  .meta-item { margin-bottom: 1.75rem; }
+  .meta-label { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.3rem; }
+  .meta-value { color: var(--ink); }
+
+  /* ── PROJECTS ── */
+  .projects-list { display: flex; flex-direction: column; gap: 0; }
+  .project-item {
+    border-top: 1px solid var(--rule);
+    padding: 2rem 0;
+    display: grid; grid-template-columns: 2fr 1fr;
+    gap: 2rem; align-items: start;
+    transition: background 0.2s;
+    cursor: default;
+  }
+  .project-item:last-child { border-bottom: 1px solid var(--rule); }
+  .project-item:hover { background: var(--accent-pale); margin: 0 -1.5rem; padding-left: 1.5rem; padding-right: 1.5rem; }
+  .project-title {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5rem;
+  }
+  .project-desc { color: var(--ink-mid); font-size: 0.85rem; line-height: 1.8; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+  .tag {
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    border: 1px solid var(--rule); padding: 0.2rem 0.6rem; color: var(--ink-mid);
+  }
+  .project-year { font-size: 0.75rem; color: var(--ink-faint); text-align: right; padding-top: 0.25rem; }
+  .project-type { font-size: 0.75rem; color: var(--ink-mid); text-align: right; }
+
+  /* ── SKILLS ── */
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+  .skill-group-title {
+    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1rem;
+  }
+  .skill-list { list-style: none; }
+  .skill-list li {
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-mid);
+    font-size: 0.85rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .skill-list li::before { content: '—'; color: var(--ink-faint); font-size: 0.7rem; }
+
+  /* ── CONTACT ── */
+  .contact-intro { max-width: 480px; color: var(--ink-mid); margin-bottom: 3rem; line-height: 1.9; }
+  .contact-form { display: flex; flex-direction: column; gap: 1.25rem; max-width: 560px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  .field { display: flex; flex-direction: column; gap: 0.4rem; }
+  .field label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-faint); }
+  .field input, .field textarea {
+    background: transparent;
+    border: none; border-bottom: 1px solid var(--rule);
+    padding: 0.6rem 0;
+    font-family: var(--mono); font-size: 0.85rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+    resize: none;
+  }
+  .field input:focus, .field textarea:focus { border-color: var(--accent); }
+  .field textarea { height: 100px; }
+  .form-submit { align-self: flex-start; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 2rem var(--gutter);
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--ink-faint); font-size: 0.75rem;
+    max-width: calc(var(--max) + 2 * var(--gutter)); margin: 0 auto;
+  }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { color: var(--ink-faint); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 680px) {
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-meta { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 2rem; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .project-item { grid-template-columns: 1fr; }
+    .project-year, .project-type { text-align: left; }
+    .form-row { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">Connor.</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-label">Computational Engineering</p>
+  <h1 class="hero-name">Connor<br><em>Engineer.</em></h1>
+  <p class="hero-sub">
+    I work at the intersection of simulation, fluid dynamics, and data — building tools and models that make complex engineering problems tractable.
+  </p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn btn-accent">View Projects</a>
+    <a href="cv.pdf" class="btn" download>Download CV</a>
+  </div>
+  <span class="hero-scroll">Scroll</span>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="pt-nav">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">About Me</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-bio reveal">
+      <p>
+        I'm a computational engineer specialising in turbomachinery and aeroelastic simulation. My work spans the full pipeline — from CFD preprocessing and modal analysis through to post-processing, visualisation, and insight extraction.
+      </p>
+      <p>
+        I'm comfortable working at the boundary between physics and software: writing Python tooling, processing large simulation output datasets, and communicating results clearly to both technical and non-technical audiences.
+      </p>
+      <p>
+        Outside of work I enjoy [your interests here].
+      </p>
+    </div>
+    <div class="about-meta reveal">
+      <div class="meta-item">
+        <div class="meta-label">Location</div>
+        <div class="meta-value">London, UK</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Specialisation</div>
+        <div class="meta-value">Turbomachinery · Aeroelasticity · CFD</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Education</div>
+        <div class="meta-value">MEng / PhD — [Your University]</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Currently</div>
+        <div class="meta-value">[Your current role / organisation]</div>
+      </div>
+      <div style="margin-top:2rem;">
+        <a href="cv.pdf" class="btn" download style="font-size:0.7rem;">Download CV →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Projects</h2>
+  </div>
+  <div class="projects-list">
+
+    <div class="project-item reveal">
+      <div>
+        <div class="project-title">Aeroelastic Modal Force Visualiser</div>
+        <div class="project-desc">
+          Python tooling for extracting and visualising normalised modal forces from multi-case CFD/aeroelastic simulations. Features FFT-based force decomposition, Hilbert envelope computation, and publication-quality plot output across aerodynamic baseline and prescribed vibration cases.
+        </div>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">NumPy</span>
+          <span class="tag">Matplotlib</span>
+          <span class="tag">Signal Processing</span>
+          <span class="tag">CFD</span>
+        </div>
+      </div>
+      <div>
+        <div class="project-year">2024–25</div>
+        <div class="project-type">Research Tool</div>
+      </div>
+    </div>
+
+    <div class="project-item reveal">
+      <div>
+        <div class="project-title">Project Two — Title Here</div>
+        <div class="project-desc">
+          A brief description of what this project involved, the problem it solved, and what makes it interesting. Replace with your own work.
+        </div>
+        <div class="project-tags">
+          <span class="tag">MATLAB</span>
+          <span class="tag">FEA</span>
+        </div>
+      </div>
+      <div>
+        <div class="project-year">2023</div>
+        <div class="project-type">Simulation</div>
+      </div>
+    </div>
+
+    <div class="project-item reveal">
+      <div>
+        <div class="project-title">Project Three — Title Here</div>
+        <div class="project-desc">
+          Another project description. Highlight the methodology, tools used, and outcomes achieved.
+        </div>
+        <div class="project-tags">
+          <span class="tag">OpenFOAM</span>
+          <span class="tag">HPC</span>
+          <span class="tag">Python</span>
+        </div>
+      </div>
+      <div>
+        <div class="project-year">2022</div>
+        <div class="project-type">CFD Study</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Skills</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="reveal">
+      <div class="skill-group-title">Simulation & Analysis</div>
+      <ul class="skill-list">
+        <li>Computational Fluid Dynamics</li>
+        <li>Aeroelastic Simulation</li>
+        <li>Modal Analysis</li>
+        <li>FEA / Structural Dynamics</li>
+        <li>Turbomachinery Aerodynamics</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="skill-group-title">Software & Tooling</div>
+      <ul class="skill-list">
+        <li>Python (NumPy, SciPy, Matplotlib)</li>
+        <li>MATLAB</li>
+        <li>OpenFOAM</li>
+        <li>ANSYS / Fluent</li>
+        <li>Git & Version Control</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="skill-group-title">Methods & Techniques</div>
+      <ul class="skill-list">
+        <li>FFT & Signal Processing</li>
+        <li>Hilbert Transform / Envelope</li>
+        <li>HPC & Batch Processing</li>
+        <li>Data Visualisation</li>
+        <li>Technical Writing</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Get in Touch</h2>
+  </div>
+  <p class="contact-intro reveal">
+    Whether you'd like to discuss a collaboration, ask about my work, or just say hello — I'd be glad to hear from you.
+  </p>
+  <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+    <div class="form-row">
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Your name" required>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com" required>
+      </div>
+    </div>
+    <div class="field">
+      <label for="subject">Subject</label>
+      <input type="text" id="subject" placeholder="What's this about?">
+    </div>
+    <div class="field">
+      <label for="message">Message</label>
+      <textarea id="message" placeholder="Your message…" required></textarea>
+    </div>
+    <div class="form-submit">
+      <button type="submit" class="btn btn-accent">Send Message</button>
+    </div>
+    <p id="form-feedback" style="font-size:0.8rem;color:var(--accent);display:none;margin-top:0.5rem;">Message sent! I'll be in touch soon.</p>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 Connor</span>
+  <div class="footer-links">
+    <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+    <a href="https://github.com" target="_blank">GitHub</a>
+    <a href="mailto:you@example.com">Email</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        // stagger siblings
+        const siblings = [...e.target.parentElement.querySelectorAll('.reveal')];
+        const idx = siblings.indexOf(e.target);
+        setTimeout(() => e.target.classList.add('visible'), idx * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Form
+  function handleSubmit(e) {
+    e.preventDefault();
+    // Wire up to your backend / Formspree / EmailJS as needed
+    document.getElementById('form-feedback').style.display = 'block';
+    e.target.reset();
+  }
+
+  // Active nav highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+</script>
+</body>
+</html>
