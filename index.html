@@ -242,6 +242,37 @@
   }
   .reveal.visible { opacity: 1; transform: none; }
 
+  /* ── CUSTOM CURSOR ── */
+  * { cursor: none !important; }
+
+  .cursor-dot {
+    position: fixed; top: 0; left: 0; z-index: 9999;
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s;
+  }
+  .cursor-ring {
+    position: fixed; top: 0; left: 0; z-index: 9998;
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease, background 0.3s;
+    opacity: 0.7;
+  }
+  body.cursor-hover .cursor-ring {
+    width: 60px; height: 60px;
+    background: rgba(200, 80, 26, 0.08);
+    opacity: 1;
+  }
+  body.cursor-hover .cursor-dot {
+    width: 4px; height: 4px;
+  }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 680px) {
     .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -255,6 +286,8 @@
 </style>
 </head>
 <body>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
 <!-- NAV -->
 <nav>
@@ -272,7 +305,7 @@
   <p class="hero-label">Computational Engineering</p>
   <h1 class="hero-name">Connor<br><em>Engineer.</em></h1>
   <p class="hero-sub">
-    A PhD researcher with a focus on aeroelasticity in Turbomachinery with a background in aerospace propulsion.
+    A PhD researcher with a focus on aeroelasticity in Turbomachinery and a background in aerospace propulsion.
   </p>
   <div class="hero-cta">
     <a href="#projects" class="btn btn-accent">View Projects</a>
@@ -438,7 +471,7 @@
   <p class="contact-intro reveal">
     Whether you'd like to discuss a collaboration, ask about my work, or just say hello — I'd be glad to hear from you.
   </p>
-  <form class="contact-form reveal" action="https://formspree.io/f/xyklebgg" method="POST">
+  <form class="contact-form reveal" action="https://formspree.io/f/abcxyz" method="POST">
     <div class="form-row">
       <div class="field">
         <label for="name">Name</label>
@@ -487,6 +520,44 @@
     });
   }, { threshold: 0.12 });
   reveals.forEach(el => observer.observe(el));
+
+  // Custom cursor
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    dot.style.left = mouseX + 'px';
+    dot.style.top  = mouseY + 'px';
+  });
+
+  // Ring follows with smooth lag
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    ring.style.left = ringX + 'px';
+    ring.style.top  = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Expand on interactive elements
+  const hoverTargets = document.querySelectorAll('a, button, .project-item, .btn');
+  hoverTargets.forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+
+  // Hide cursor when leaving window
+  document.addEventListener('mouseleave', () => {
+    dot.style.opacity = '0'; ring.style.opacity = '0';
+  });
+  document.addEventListener('mouseenter', () => {
+    dot.style.opacity = '1'; ring.style.opacity = '0.7';
+  });
 
   // Active nav highlight
   const sections = document.querySelectorAll('section[id]');
